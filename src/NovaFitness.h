@@ -133,7 +133,6 @@ namespace GuL
 
     private:
         uint16_t _id;
-        uint8_t _payloadIndex;
         int8_t (NovaFitness::*handle)(uint8_t) = NULL;
 
     public:

@@ -2,7 +2,7 @@
 
 namespace GuL
 {
-    NovaFitness::NovaFitness(Stream &stream, uint16_t id) : _stream(stream), _payloadSize(0)
+    NovaFitness::NovaFitness(Stream &stream, uint16_t id) : _stream(stream), _payloadSize(0), _reportingMode(PASSIVE), _workMode(SLEEP), _workingPeriodSeconds(0)
     {
         _id = id;
     }
@@ -98,19 +98,28 @@ namespace GuL
                 if (byte != SETTINGS_COMMAND_ID && byte != DATA_COMMAND_ID && byte != DATA100_COMMAND_ID)
                 {
                     _parseStep = WAIT_FOR_NEW_FRAME;
+                    break; // Exit switch to prevent further processing
                 }
                 _parseStep = RECEIVE_PAYLOAD;
                 _payload[_payloadSize++] = byte;
                 break;
             case RECEIVE_PAYLOAD:
-                _payload[_payloadSize++] = byte;
+                if (_payloadSize < 10) // Bounds check to prevent overflow
+                {
+                    _payload[_payloadSize++] = byte;
+                }
                 // TODO: Maybe a more dynmaically approach for the frame size? At the moment all frames to receive should have a size of 10 constant
-                if (_payloadSize == 9)
+                if (_payloadSize >= 9)
                 {
                     _parseStep = RECEIVE_TAIL;
                 }
                 break;
             case RECEIVE_TAIL:
+                if (_payloadSize >= 10) // Already full, discard byte and reset
+                {
+                    _parseStep = WAIT_FOR_NEW_FRAME;
+                    break;
+                }
                 _payload[_payloadSize++] = byte;
                 _parseStep = WAIT_FOR_NEW_FRAME;
                 // TODO: Check for the ID also
@@ -168,8 +177,8 @@ namespace GuL
 
     void NovaFitness::handleDataPayload()
     {
-        _pm2_5 = (float)((_payload[3] << 8 | _payload[2]) / 10);
-        _pm10 = (float)((_payload[5] << 8 | _payload[4]) / 10);
+        _pm2_5 = ((_payload[3] << 8) | _payload[2]) / 10.0f;
+        _pm10 = ((_payload[5] << 8) | _payload[4]) / 10.0f;
 
         // Payload 6 and 7 unhandled 'cause this is only the device id.
         // Maybe handle later if more than one NovaFitness sensor should work on
