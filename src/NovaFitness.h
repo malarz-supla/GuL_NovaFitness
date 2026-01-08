@@ -27,7 +27,6 @@
 #pragma once
 
 #include <Arduino.h>
-#include <string>
 #include <vector>
 
 namespace GuL
@@ -55,7 +54,7 @@ namespace GuL
         };
 
         NovaFitness(Stream &stream, uint16_t id = 0xFFFF);
-        std::string getSensorName() { return _name; }
+        const char *getSensorName() { return _name; }
 
         bool sleep();
         bool wakeup();
@@ -122,7 +121,7 @@ namespace GuL
         void handleDataPayload();
         void handleData100Payload();
         void handleSettingsPayload();
-        std::string _name = "NOVAFITNESS";
+        const char *_name = "NOVAFITNESS";
 
     private:
         Stream &_stream;

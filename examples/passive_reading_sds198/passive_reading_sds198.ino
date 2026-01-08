@@ -6,10 +6,6 @@ GuL::SDS198 sds(Serial2);
 #define RX2 1
 #define TX2 38
 
-std::string outputFormat = "PM100 (STD) \t= % 6.2f µg/µ3 \n"
-                           "Firmware Version \t= %d.%d.%d \n"
-                           "\n";
-
 void setup()
 {
   Serial.begin(9600);
@@ -26,10 +22,14 @@ void loop()
   delay(20);
   sds.read();
 
-  Serial.printf(outputFormat.c_str(),
-                sds.getPM100(),
-                sds.getVersion().year,
-                sds.getVersion().month,
-                sds.getVersion().day);
+  Serial.print("PM100 (Std): \t");
+  Serial.println(sds.getPM100());
+  Serial.print("Firmware Version: \t");
+  Serial.print(sds.getVersion().year);
+  Serial.print(".");
+  Serial.print(sds.getVersion().month);
+  Serial.print(".");
+  Serial.println(sds.getVersion().day);
+  Serial.println();
   delay(1000);
 }
