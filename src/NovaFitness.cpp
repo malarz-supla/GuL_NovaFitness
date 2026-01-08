@@ -229,7 +229,7 @@ namespace GuL
         // "Checksum: Low 8bit of the sum result of Data Bytes（not including packet head, tail and Command ID"
         uint8_t sum = 0;
 
-        for (int8_t i = 2; i < cmdSize - 2; i++)
+        for (size_t i = 2; i < cmdSize - 2; i++)
         {
             sum += cmd[i];
         }
