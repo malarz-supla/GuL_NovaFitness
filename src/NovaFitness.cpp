@@ -2,78 +2,78 @@
 
 namespace GuL
 {
-    NovaFitness::NovaFitness(Stream &stream, uint16_t id) : _stream(stream)
+    NovaFitness::NovaFitness(Stream &stream, uint16_t id) : _stream(stream), _payloadSize(0)
     {
         _id = id;
     }
 
     bool NovaFitness::sleep()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Set, WorkMode::SLEEP, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x05, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Set, WorkMode::SLEEP, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x05, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::wakeup()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Set, WorkMode::WAKEUP, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x05, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Set, WorkMode::WAKEUP, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x05, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::setToActiveReporting()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Set, ReportingMode::ACTIVE, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x05, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Set, ReportingMode::ACTIVE, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x05, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::setToPassiveReporting()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Set, ReportingMode::PASSIVE, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x05, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Set, ReportingMode::PASSIVE, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x05, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::poll()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::QUERY_DATA, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x00, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::QUERY_DATA, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x00, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::pollFirmwareVersion()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::FIRMWARE_SETTING, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x00, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::FIRMWARE_SETTING, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x00, 0xAB};
+        return this->send(command, 19);
     }
     bool NovaFitness::pollReportingMode()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Query, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x00, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::REPORTING_MODE, SettingsAction::Query, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x00, 0xAB};
+        return this->send(command, 19);
     }
     bool NovaFitness::pollWorkingMode()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Query, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x00, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::WORK_MODE, SettingsAction::Query, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x00, 0xAB};
+        return this->send(command, 19);
     }
     bool NovaFitness::pollWorkingPeriod()
     {
-        std::vector<uint8_t> command = {0xAA, 0xB4, SettingsType::WORKING_PERIOD, SettingsAction::Query, 0x00, 0x00, 0x00,
-                                        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                        0x00, 0xFF, 0xFF, 0x00, 0xAB};
-        return this->send(command);
+        uint8_t command[19] = {0xAA, 0xB4, SettingsType::WORKING_PERIOD, SettingsAction::Query, 0x00, 0x00, 0x00,
+                               0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                               0x00, 0xFF, 0xFF, 0x00, 0xAB};
+        return this->send(command, 19);
     }
 
     bool NovaFitness::read()
@@ -90,8 +90,8 @@ namespace GuL
                 if (byte == 0xAA)
                 {
                     _parseStep = RECEIVE_COMMAND_ID;
-                    _payload.clear();
-                    _payload.emplace_back(byte);
+                    _payloadSize = 0;
+                    _payload[_payloadSize++] = byte;
                 }
                 break;
             case RECEIVE_COMMAND_ID:
@@ -100,21 +100,21 @@ namespace GuL
                     _parseStep = WAIT_FOR_NEW_FRAME;
                 }
                 _parseStep = RECEIVE_PAYLOAD;
-                _payload.emplace_back(byte);
+                _payload[_payloadSize++] = byte;
                 break;
             case RECEIVE_PAYLOAD:
-                _payload.emplace_back(byte);
+                _payload[_payloadSize++] = byte;
                 // TODO: Maybe a more dynmaically approach for the frame size? At the moment all frames to receive should have a size of 10 constant
-                if (_payload.size() == 9)
+                if (_payloadSize == 9)
                 {
                     _parseStep = RECEIVE_TAIL;
                 }
                 break;
             case RECEIVE_TAIL:
-                _payload.emplace_back(byte);
+                _payload[_payloadSize++] = byte;
                 _parseStep = WAIT_FOR_NEW_FRAME;
                 // TODO: Check for the ID also
-                if (byte != 0xAB || this->calcChecksum(_payload) != _payload.at(_payload.size() - 2))
+                if (byte != 0xAB || this->calcChecksum(_payload, _payloadSize) != _payload[_payloadSize - 2])
                 {
                     break;
                 }
@@ -139,7 +139,7 @@ namespace GuL
 
     void NovaFitness::unpackFrame()
     {
-        switch (_payload.at(1))
+        switch (_payload[1])
         {
         case SETTINGS_COMMAND_ID:
             this->handleSettingsPayload();
@@ -153,23 +153,23 @@ namespace GuL
         }
     }
 
-    bool NovaFitness::send(std::vector<uint8_t> &cmd)
+    bool NovaFitness::send(uint8_t *cmd, size_t cmdSize)
     {
-        if (cmd.size() != 19)
+        if (cmdSize != 19)
         {
             // The frame to send is always 19 bytes long
             return false;
         }
         this->setIdIntoFrame(cmd);
-        cmd[17] = this->calcChecksum(cmd);
-        size_t sendBytes = _stream.write(cmd.data(), cmd.size());
-        return sendBytes == cmd.size();
+        cmd[17] = this->calcChecksum(cmd, cmdSize);
+        size_t sendBytes = _stream.write(cmd, cmdSize);
+        return sendBytes == cmdSize;
     }
 
     void NovaFitness::handleDataPayload()
     {
-        _pm2_5 = (float)((_payload.at(3) << 8 | _payload.at(2)) / 10);
-        _pm10 = (float)((_payload.at(5) << 8 | _payload.at(4)) / 10);
+        _pm2_5 = (float)((_payload[3] << 8 | _payload[2]) / 10);
+        _pm10 = (float)((_payload[5] << 8 | _payload[4]) / 10);
 
         // Payload 6 and 7 unhandled 'cause this is only the device id.
         // Maybe handle later if more than one NovaFitness sensor should work on
@@ -185,42 +185,42 @@ namespace GuL
 
     void NovaFitness::handleSettingsPayload()
     {
-        switch ((SettingsType)_payload.at(2))
+        switch ((SettingsType)_payload[2])
         {
         case REPORTING_MODE:
-            _reportingMode = _payload.at(4) ? ACTIVE : PASSIVE;
+            _reportingMode = _payload[4] ? ACTIVE : PASSIVE;
             break;
         case ID_SETTING:
-            _id = (_payload.at(6) << 8) | _payload.at(7);
+            _id = (_payload[6] << 8) | _payload[7];
             break;
         case WORK_MODE:
-            _workMode = _payload.at(4) == 0 ? SLEEP : WAKEUP;
+            _workMode = _payload[4] == 0 ? SLEEP : WAKEUP;
             break;
         case WORKING_PERIOD:
-            _workingPeriodSeconds = _payload.at(4) == 0 ? 1 : _payload.at(4) * 60;
+            _workingPeriodSeconds = _payload[4] == 0 ? 1 : _payload[4] * 60;
             break;
         case FIRMWARE_SETTING:
-            _firmwareVersion.year = _payload.at(3);
-            _firmwareVersion.month = _payload.at(4);
-            _firmwareVersion.day = _payload.at(5);
+            _firmwareVersion.year = _payload[3];
+            _firmwareVersion.month = _payload[4];
+            _firmwareVersion.day = _payload[5];
             break;
         default:
             break;
         }
     }
 
-    void NovaFitness::setIdIntoFrame(std::vector<uint8_t> &cmd)
+    void NovaFitness::setIdIntoFrame(uint8_t *cmd)
     {
         cmd[15] = (this->_id >> 8) & 0xFF;
         cmd[16] = this->_id & 0xFF;
     }
 
-    uint8_t NovaFitness::calcChecksum(std::vector<uint8_t> &cmd)
+    uint8_t NovaFitness::calcChecksum(uint8_t *cmd, size_t cmdSize)
     {
         // "Checksum: Low 8bit of the sum result of Data Bytes（not including packet head, tail and Command ID"
         uint8_t sum = 0;
 
-        for (int8_t i = 2; i < cmd.size() - 2; i++)
+        for (int8_t i = 2; i < cmdSize - 2; i++)
         {
             sum += cmd[i];
         }

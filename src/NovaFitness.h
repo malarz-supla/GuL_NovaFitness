@@ -27,7 +27,6 @@
 #pragma once
 
 #include <Arduino.h>
-#include <vector>
 
 namespace GuL
 {
@@ -116,7 +115,7 @@ namespace GuL
         uint16_t _workingPeriodSeconds;
         float _pm2_5 = -1, _pm10 = -1, _pm100 = -1;
 
-        bool send(std::vector<uint8_t> &cmd);
+        bool send(uint8_t *cmd, size_t cmdSize);
         void unpackFrame();
         void handleDataPayload();
         void handleData100Payload();
@@ -125,11 +124,12 @@ namespace GuL
 
     private:
         Stream &_stream;
-        std::vector<uint8_t> _payload;
+        uint8_t _payload[10];
+        uint8_t _payloadSize;
 
         uint8_t
-        calcChecksum(std::vector<uint8_t> &cmd);
-        void setIdIntoFrame(std::vector<uint8_t> &cmd);
+        calcChecksum(uint8_t *cmd, size_t cmdSize);
+        void setIdIntoFrame(uint8_t *cmd);
 
     private:
         uint16_t _id;
